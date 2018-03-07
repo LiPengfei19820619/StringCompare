@@ -5,7 +5,7 @@ PROJECT(StringCompare)
 SET(_BASE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
 if (MSVC)
-    add_definitions(/MTd)
+    add_definitions(/MTd /W3 /WX-)
 endif()
 
 ADD_SUBDIRECTORY(${_BASE_PATH}/src)
