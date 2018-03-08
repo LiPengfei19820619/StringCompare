@@ -1,39 +1,16 @@
 #include "StringCompare.h"
 
+#include "ComparableSubString.h"
 #include "StringSplitter.h"
-#include "DigitSubString.h"
-#include "CharSubString.h"
+#include "StringComparer.h"
 
 int StringCompare(const std::string &str1, const std::string &str2)
 {
-	std::vector<ComparableSubString *> substrs1;
-	std::vector<ComparableSubString *> substrs2;
+	std::vector<ComparableSubString *> sub_str_list1;
+	std::vector<ComparableSubString *> sub_str_list2;
 
-	StringSplitter::Split(str1, substrs1);
-	StringSplitter::Split(str2, substrs2);
+	StringSplitter::Split(str1, sub_str_list1);
+	StringSplitter::Split(str2, sub_str_list2);
 
-	std::vector<ComparableSubString *>::iterator it1;
-	std::vector<ComparableSubString *>::iterator it2;
-
-	for (it1 = substrs1.begin(), it2 = substrs2.begin();
-		 it1 != substrs1.end()&&it2 != substrs2.end();
-		 it1++, it2++)
-	{
-		int result = (*it1)->Compare(*(*it2));
-		if (result != 0)
-		{
-			return result;
-		}
-	}
-
-	if (it1 == substrs1.end() && it2 == substrs2.end())
-	{
-		return 0;
-	}
-	if (it1 == substrs1.end())
-	{
-		return -1;
-	}
-
-	return 1;
+	return StringComparer::Compare(sub_str_list1, sub_str_list2);
 }
