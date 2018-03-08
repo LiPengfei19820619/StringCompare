@@ -83,3 +83,17 @@ TEST(StringCompare, GIVEN_String1_DigitEscapeToChar_String2_PureAlphabet_WHEN_Co
 	EXPECT_EQ(StringCompare("\\123abc", "abcd"), -1);
 }
 
+// 字符串1：包含字母、转义数字、数字，字符串2：包含字母、转义数字、数字
+TEST(StringCompare, GIVEN_String1_AlphabetEscapeDigit_String2_AlphabetDigit_WHEN_Compare_THEN_ResultSameWithStrcmp)
+{
+	EXPECT_EQ(StringCompare("abc\\123456789", "abc\\23456789"), -1);
+	
+}
+
+// 字符串1：包含字母、转义字母、数字，字符串2：包含字母、转义字母、数字
+TEST(StringCompare, GIVEN_String1_AlphabetEscapeAlphabetDigit_String2_AlphabetEscapeAlphabetDigit_WHEN_Compare_THEN_ResultSameWithStrcmp)
+{
+	EXPECT_EQ(StringCompare("123\\a5", "12345"), 1);
+
+}
+

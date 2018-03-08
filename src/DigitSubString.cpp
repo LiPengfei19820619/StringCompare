@@ -4,27 +4,66 @@ void DigitSubString::Scan(const std::string &str, size_t begin_index, size_t &en
 {
 	size_t index = 0;
 	bool begin_valid_digit = false;
+	bool escape = false;
 
 	for (index = begin_index; index < str.length(); index++)
 	{
-		if (!isdigit(str[index]))
+		if (!escape)
 		{
-			break;
-		}
-		_digit_list.push_back(str[index] - '0');
+			if (isdigit(str[index]))
+			{
+				_digit_list.push_back(str[index] - '0');
 
-		if (begin_valid_digit)
-		{
-			_valid_digit_count++;
+				if (begin_valid_digit)
+				{
+					_valid_digit_count++;
+				}
+				else
+				{
+					if (str[index] != '0')
+					{
+						begin_valid_digit = true;
+						_valid_digit_count++;
+					}
+				}
+			}
+			else if (str[index] == '\\')
+			{
+				escape = true;
+			}
+			else
+			{
+				break;
+			}
 		}
 		else
 		{
-			if (str[index] != '0')
+			if (isalpha(str[index]))
 			{
-				begin_valid_digit = true;
-				_valid_digit_count++;
+				_digit_list.push_back(str[index]);
+
+				if (begin_valid_digit)
+				{
+					_valid_digit_count++;
+				}
+				else
+				{
+					if (str[index] != 0)
+					{
+						begin_valid_digit = true;
+						_valid_digit_count++;
+					}
+				}
+
+				escape = false;
+			}
+			else
+			{
+				index--;
+				break;
 			}
 		}
+		
 	}
 
 	end_index = index;
