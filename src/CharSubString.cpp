@@ -1,15 +1,19 @@
 #include "CharSubString.h"
 
-void CharSubString::Scan(const std::string &str)
+void CharSubString::Scan(const std::string &str, size_t begin_index, size_t &end_index)
 {
-	for (size_t index = 0; index < str.length(); index++)
+	size_t index = 0;
+
+	for (index = begin_index; index < str.length(); index++)
 	{
 		if (!isalpha(str[index]))
 		{
-			return;
+			break;
 		}
 		_value += str[index];
 	}
+
+	end_index = index;
 }
 
 int CharSubString::Compare(const ComparableSubString &substr)

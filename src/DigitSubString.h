@@ -7,7 +7,7 @@
 class DigitSubString : public ComparableSubString
 {
 public:
-	void Scan(const std::string &str);
+	void Scan(const std::string &str, size_t begin_index, size_t &end_index);
 	int Compare(const ComparableSubString &substr);
 	unsigned int GetValue() const;
 

@@ -1,15 +1,19 @@
 #include "DigitSubString.h"
 
-void DigitSubString::Scan(const std::string &str)
+void DigitSubString::Scan(const std::string &str, size_t begin_index, size_t &end_index)
 {
-	for (size_t index = 0; index < str.length(); index++)
+	size_t index = 0;
+
+	for (index = 0; index < str.length(); index++)
 	{
 		if (!isdigit(str[index]))
 		{
-			return;
+			break;
 		}
 		_digit_list.push_back(str[index] - '0');
 	}
+
+	end_index = index;
 }
 
 int DigitSubString::Compare(const ComparableSubString &substr)

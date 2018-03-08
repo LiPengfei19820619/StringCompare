@@ -6,10 +6,36 @@
 
 int StringCompare(const std::string &str1, const std::string &str2)
 {
-	ComparableSubString *sub1 = StringSplitter::Split(str1);
-	ComparableSubString *sub2 = StringSplitter::Split(str2);
+	std::vector<ComparableSubString *> substrs1;
+	std::vector<ComparableSubString *> substrs2;
 
-	return sub1->Compare(*sub2);
+	StringSplitter::Split(str1, substrs1);
+	StringSplitter::Split(str2, substrs2);
+
+	std::vector<ComparableSubString *>::iterator it1;
+	std::vector<ComparableSubString *>::iterator it2;
+
+	for (it1 = substrs1.begin(), it2 = substrs2.begin();
+		 it1 != substrs1.end()&&it2 != substrs2.end();
+		 it1++, it2++)
+	{
+		int result = (*it1)->Compare(*(*it2));
+		if (result != 0)
+		{
+			return result;
+		}
+	}
+
+	if (it1 == substrs1.end() && it2 == substrs2.end())
+	{
+		return 0;
+	}
+	if (it1 == substrs1.end())
+	{
+		return -1;
+	}
+
+	return 1;
 
 	/*CharSubString substr1;
 	CharSubString substr2;

@@ -3,25 +3,24 @@
 #include "CharSubString.h"
 #include "DigitSubString.h"
 
-ComparableSubString *StringSplitter::Split(const std::string &str)
+bool StringSplitter::Split(const std::string &str, std::vector<ComparableSubString *> &substrs)
 {
-	if (str.length() == 0)
-	{
-		return NULL;
-	}
+	size_t cur_index = 0;
 
-	if (isalpha(str[0]))
+	for (cur_index = 0; cur_index < str.length(); cur_index++)
 	{
-		CharSubString *sub = new CharSubString();
-		sub->Scan(str);
-		return sub;
+		if (isalpha(str[0]))
+		{
+			CharSubString *sub = new CharSubString();
+			sub->Scan(str, cur_index, cur_index);
+			substrs.push_back(sub);
+		}
+		if (isdigit(str[0]))
+		{
+			DigitSubString *sub = new DigitSubString();
+			sub->Scan(str,cur_index, cur_index);
+			substrs.push_back(sub);
+		}
 	}
-	if (isdigit(str[0]))
-	{
-		DigitSubString *sub = new DigitSubString();
-		sub->Scan(str);
-		return sub;
-	}
-
-	return NULL;
+	return true;
 }

@@ -3,9 +3,11 @@
 #include "ComparableSubString.h"
 
 #include <string>
+#include <vector>
 
 class StringSplitter
 {
 public:
-	static ComparableSubString *Split(const std::string &str);
+	
+	static bool Split(const std::string &str, std::vector<ComparableSubString *> &substrs);
 };
