@@ -27,42 +27,58 @@ bool StringSplitter::Split(const std::string &str, std::vector<ComparableSubStri
 
 ComparableSubString *StringSplitter::SplitASubString(const std::string &str, size_t begin_pos, size_t &end_pos)
 {
-	if (isalpha(str[begin_pos]))
+	if (CurrentPosIsChar(str, begin_pos))
 	{
 		CharSubString *sub = new CharSubString();
 		sub->Scan(str, begin_pos, end_pos);
 		return sub;
 	}
-	else if (isdigit(str[begin_pos]))
+	if (CurrentPosIsDigit(str, begin_pos))
 	{
 		DigitSubString *sub = new DigitSubString();
 		sub->Scan(str, begin_pos, end_pos);
 		return sub;
 	}
-	else if (IsEscapeChar(str[begin_pos]))
+
+	return NULL;
+}
+
+bool StringSplitter::CurrentPosIsChar(const std::string &str, size_t begin_pos)
+{
+	if (isalpha(str[begin_pos]))
+	{
+		return true;
+	}
+
+	if (IsEscapeChar(str[begin_pos]))
+	{
+		size_t next_index = begin_pos + 1;
+		if (isdigit(str[next_index]))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool StringSplitter::CurrentPosIsDigit(const std::string &str, size_t begin_pos)
+{
+	if (isdigit(str[begin_pos]))
+	{
+		return true;
+	}
+
+	if (IsEscapeChar(str[begin_pos]))
 	{
 		size_t next_index = begin_pos + 1;
 		if (isalpha(str[next_index]))
 		{
-			DigitSubString *sub = new DigitSubString();
-			sub->Scan(str, begin_pos, end_pos);
-			return sub;
-		}
-		else if (isdigit(str[next_index]))
-		{
-			CharSubString *sub = new CharSubString();
-			sub->Scan(str, begin_pos, end_pos);
-			return sub;
-		}
-		else
-		{
-			return NULL;
+			return true;
 		}
 	}
-	else
-	{
-		return NULL;
-	}
+
+	return false;
 }
 
 bool StringSplitter::IsEscapeChar(char ch)

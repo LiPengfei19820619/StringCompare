@@ -12,5 +12,7 @@ public:
 
 private:
 	static ComparableSubString *SplitASubString(const std::string &str, size_t begin_pos, size_t &end_pos);
+	static bool CurrentPosIsChar(const std::string &str, size_t begin_pos);
+	static bool CurrentPosIsDigit(const std::string &str, size_t begin_pos);
 	static bool IsEscapeChar(char ch);
 };
