@@ -67,6 +67,19 @@ TEST(StringCompare, GIVEN_String1_PureDigits_String2_PureAlphabets_WHEN_Compare_
 // 两个字符数字混合的字符串(字符子串和数字子串不对应)比较
 TEST(StringCompare, GIVEN_Two_Strings_With_Digits_And_Chars_NotInSamePosition_WHEN_Compare_THEN_GetResult)
 {
+	EXPECT_EQ(StringCompare("90abc", "abc90"), -1);
+}
 
+// 字符串1：包含数字转义为字符，字符串2：包含纯字母
+TEST(StringCompare, GIVEN_String1_DigitEscapeToChar_String2_PureAlphabet_WHEN_Compare_THEN_ResultSameWithStrcmp)
+{
+	EXPECT_EQ(StringCompare("abc\\1", "abcd"), -1);
+	EXPECT_EQ(StringCompare("abc\\1", "abc"), 1);
+	EXPECT_EQ(StringCompare("abc\\12", "abc"), 1);
+	EXPECT_EQ(StringCompare("abc\\123", "abc"), 1);
+	EXPECT_EQ(StringCompare("abc\\1234", "abc"), 1);
+	EXPECT_EQ(StringCompare("abc\\1234", "abcdefg"), -1);
+	EXPECT_EQ(StringCompare("abc\\1234\\123", "abcdefg"), -1);
+	EXPECT_EQ(StringCompare("\\123abc", "abcd"), -1);
 }
 

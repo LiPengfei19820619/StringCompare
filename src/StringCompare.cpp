@@ -36,20 +36,4 @@ int StringCompare(const std::string &str1, const std::string &str2)
 	}
 
 	return 1;
-
-	/*CharSubString substr1;
-	CharSubString substr2;
-
-	substr1.Scan(str1);
-	substr2.Scan(str2);
-
-	return substr1.Compare(substr2);*/
-
-	//DigitSubString substr1;
-	//DigitSubString substr2;
-
-	//substr1.Scan(str1);
-	//substr2.Scan(str2);
-
-	//return substr1.Compare(substr2);
 }
