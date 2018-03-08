@@ -57,6 +57,13 @@ TEST(StringCompare, GIVEN_String1_PureChars_String2_PureDigits_WHEN_Compare_THEN
 	EXPECT_EQ(StringCompare("abcdefghijklmnopqrstuvwxyz", "01234567890123456789012345678901234567890123456789"), 1);
 }
 
+// 纯数字的串和纯字母的串进行比较(规则(3)如果被比较的一边是子数字串，一边是子字母串，则子数字串小；)
+TEST(StringCompare, GIVEN_String1_PureDigits_String2_PureAlphabets_WHEN_Compare_THEN_String1_LittleThan_String2)
+{
+	EXPECT_EQ(StringCompare("90", "abc"), -1);
+	EXPECT_EQ(StringCompare("01234567890123456789012345678901234567890123456789", "abcdefghijklmnopqrstuvwxyz"), -1);
+}
+
 // 两个字符数字混合的字符串(字符子串和数字子串不对应)比较
 TEST(StringCompare, GIVEN_Two_Strings_With_Digits_And_Chars_NotInSamePosition_WHEN_Compare_THEN_GetResult)
 {

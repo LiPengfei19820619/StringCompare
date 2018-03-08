@@ -32,6 +32,11 @@ void DigitSubString::Scan(const std::string &str, size_t begin_index, size_t &en
 
 int DigitSubString::Compare(const ComparableSubString &substr)
 {
+	if (substr.IsCharString())
+	{
+		return -1;
+	}
+
 	const DigitSubString dsubstr = dynamic_cast<const DigitSubString &>(substr);
 
 	if (_valid_digit_count > dsubstr._valid_digit_count)
