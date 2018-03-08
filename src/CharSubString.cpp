@@ -18,6 +18,21 @@ void CharSubString::Scan(const std::string &str, size_t begin_index, size_t &end
 
 int CharSubString::Compare(const ComparableSubString &substr)
 {
+	if (substr.IsDigitString())
+	{
+		return 1;
+	}
+
 	const CharSubString &csubstr = dynamic_cast<const CharSubString &>(substr);
 	return strcmp(_value.c_str(), csubstr._value.c_str());
+}
+
+bool CharSubString::IsCharString() const
+{
+	return true;
+}
+
+bool CharSubString::IsDigitString() const
+{
+	return false;
 }

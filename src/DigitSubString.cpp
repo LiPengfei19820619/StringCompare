@@ -91,3 +91,13 @@ int DigitSubString::Compare(const ComparableSubString &substr)
 
 }
 
+bool DigitSubString::IsCharString() const
+{
+	return false;
+}
+
+bool DigitSubString::IsDigitString() const
+{
+	return true;
+}
+
