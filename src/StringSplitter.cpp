@@ -7,19 +7,23 @@ bool StringSplitter::Split(const std::string &str, std::vector<ComparableSubStri
 {
 	size_t cur_index = 0;
 
-	for (cur_index = 0; cur_index < str.length(); cur_index++)
+	while (cur_index < str.length())
 	{
-		if (isalpha(str[0]))
+		if (isalpha(str[cur_index]))
 		{
 			CharSubString *sub = new CharSubString();
 			sub->Scan(str, cur_index, cur_index);
 			substrs.push_back(sub);
 		}
-		if (isdigit(str[0]))
+		else if (isdigit(str[cur_index]))
 		{
 			DigitSubString *sub = new DigitSubString();
 			sub->Scan(str,cur_index, cur_index);
 			substrs.push_back(sub);
+		}
+		else
+		{
+
 		}
 	}
 	return true;
