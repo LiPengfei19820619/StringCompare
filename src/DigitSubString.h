@@ -14,6 +14,15 @@ public:
 	bool IsDigitString() const;
 	
 private:
+	bool Append(const std::string &str, size_t cur_index, size_t &next_index);
+
+	bool AppendNonEscapeChar(const std::string &str, size_t cur_index, size_t &next_index);
+	bool AppendEscapeChar(const std::string &str, size_t cur_index, size_t &next_index);
+
+	void AppendDigitToValue(unsigned int digit);
+
 	std::vector<unsigned int> _digit_list;
 	int _valid_digit_count;
+
+	bool _is_escape;
 };

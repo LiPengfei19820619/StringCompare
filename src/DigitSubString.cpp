@@ -2,71 +2,19 @@
 
 void DigitSubString::Scan(const std::string &str, size_t begin_index, size_t &end_index)
 {
-	size_t index = 0;
-	bool begin_valid_digit = false;
-	bool escape = false;
+	size_t index = begin_index;
 
-	for (index = begin_index; index < str.length(); index++)
+	while (index < str.length())
 	{
-		if (!escape)
+		if (!Append(str, index, end_index))
 		{
-			if (isdigit(str[index]))
-			{
-				_digit_list.push_back(str[index] - '0');
-
-				if (begin_valid_digit)
-				{
-					_valid_digit_count++;
-				}
-				else
-				{
-					if (str[index] != '0')
-					{
-						begin_valid_digit = true;
-						_valid_digit_count++;
-					}
-				}
-			}
-			else if (str[index] == '\\')
-			{
-				escape = true;
-			}
-			else
-			{
-				break;
-			}
+			return;
 		}
-		else
-		{
-			if (isalpha(str[index]))
-			{
-				_digit_list.push_back(str[index]);
 
-				if (begin_valid_digit)
-				{
-					_valid_digit_count++;
-				}
-				else
-				{
-					if (str[index] != 0)
-					{
-						begin_valid_digit = true;
-						_valid_digit_count++;
-					}
-				}
-
-				escape = false;
-			}
-			else
-			{
-				index--;
-				break;
-			}
-		}
-		
+		index = end_index;
 	}
 
-	end_index = index;
+	return;
 }
 
 int DigitSubString::Compare(const ComparableSubString &substr)
@@ -145,4 +93,74 @@ bool DigitSubString::IsDigitString() const
 	return true;
 }
 
+bool DigitSubString::Append(const std::string &str, size_t cur_index, size_t &next_index)
+{
+	next_index = cur_index + 1;
+
+	if (!_is_escape)
+	{
+		return AppendNonEscapeChar(str, cur_index, next_index);
+	}
+	else
+	{
+		return AppendEscapeChar(str, cur_index, next_index);
+	}
+}
+
+bool DigitSubString::AppendNonEscapeChar(const std::string &str, size_t cur_index, size_t &next_index)
+{
+	next_index = cur_index + 1;
+
+	if (isdigit(str[cur_index]))
+	{
+		AppendDigitToValue(str[cur_index] - '0');
+	}
+	else if (str[cur_index] == '\\')
+	{
+		_is_escape = true;
+	}
+	else
+	{
+		next_index = cur_index;
+		return false;
+	}
+
+	return true;
+}
+
+bool DigitSubString::AppendEscapeChar(const std::string &str, size_t cur_index, size_t &next_index)
+{
+	next_index = cur_index + 1;
+
+	if (isalpha(str[cur_index]))
+	{
+		AppendDigitToValue(str[cur_index]);
+
+		_is_escape = false;
+	}
+	else
+	{
+		next_index = cur_index;
+		return false;
+	}
+
+	return true;
+}
+
+void DigitSubString::AppendDigitToValue(unsigned int digit)
+{
+	_digit_list.push_back(digit);
+
+	if (_valid_digit_count > 0)
+	{
+		_valid_digit_count++;
+	}
+	else
+	{
+		if (digit != 0)
+		{
+			_valid_digit_count++;
+		}
+	}
+}
 
