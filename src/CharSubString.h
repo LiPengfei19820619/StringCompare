@@ -13,5 +13,10 @@ public:
 	bool IsDigitString() const;
 
 private:
+	bool Append(const std::string &str, size_t cur_index, size_t &next_index);
+
 	std::string _value;
+
+	bool _is_escape;
+	int _has_escaped_len;
 };

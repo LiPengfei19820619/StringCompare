@@ -87,7 +87,7 @@ TEST(StringCompare, GIVEN_String1_DigitEscapeToChar_String2_PureAlphabet_WHEN_Co
 TEST(StringCompare, GIVEN_String1_AlphabetEscapeDigit_String2_AlphabetDigit_WHEN_Compare_THEN_ResultSameWithStrcmp)
 {
 	EXPECT_EQ(StringCompare("abc\\123456789", "abc\\23456789"), -1);
-	
+	EXPECT_EQ(StringCompare("abc\\12\\3def", "abc\\123def"), 0);
 }
 
 // ×Ö·û´®1£º°üº¬×ÖÄ¸¡¢×ªÒå×ÖÄ¸¡¢Êý×Ö£¬×Ö·û´®2£º°üº¬×ÖÄ¸¡¢×ªÒå×ÖÄ¸¡¢Êý×Ö
