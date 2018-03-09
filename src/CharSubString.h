@@ -15,8 +15,21 @@ public:
 private:
 	bool Append(const std::string &str, size_t cur_index, size_t &next_index);
 
+	bool AppendNonEscapeChar(const std::string &str, size_t cur_index, size_t &next_index);
+	bool AppendEscapeChar(const std::string &str, size_t cur_index, size_t &next_index);
+
+	bool BeginAppendEscapeChar(const std::string &str, size_t cur_index, size_t &next_index);
+	bool ContinueAppendEscapeChar(const std::string &str, size_t cur_index, size_t &next_index);
+
+	void StartEscape();
+	void EndEscape();
+
+	bool HasReachMaxEscapeLen() const;
+
 	std::string _value;
 
 	bool _is_escape;
 	int _has_escaped_len;
+
+	static const int MAX_ESCAPE_LEN = 3;
 };

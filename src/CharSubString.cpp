@@ -25,6 +25,7 @@ int CharSubString::Compare(const ComparableSubString &substr)
 	}
 
 	const CharSubString &csubstr = dynamic_cast<const CharSubString &>(substr);
+
 	return strcmp(_value.c_str(), csubstr._value.c_str());
 }
 
@@ -40,74 +41,107 @@ bool CharSubString::IsDigitString() const
 
 bool CharSubString::Append(const std::string &str, size_t cur_index, size_t &next_index)
 {
+	if (!_is_escape)
+	{
+		return AppendNonEscapeChar(str, cur_index, next_index);
+	}
+	else
+	{
+		return AppendEscapeChar(str, cur_index, next_index);
+	}
+}
+
+bool CharSubString::AppendNonEscapeChar(const std::string &str, size_t cur_index, size_t &next_index)
+{
 	char ch = str[cur_index];
 	next_index = cur_index + 1;
 
-	if (!_is_escape)
+	if (ch == '\\')
 	{
-		if (ch == '\\')
+		StartEscape();
+	}
+	else if (isalpha(ch))
+	{
+		_value += ch;
+	}
+	else
+	{
+		next_index = cur_index;
+		return  false;
+	}
+
+	return true;
+}
+
+bool CharSubString::AppendEscapeChar(const std::string &str, size_t cur_index, size_t &next_index)
+{
+	if (_has_escaped_len == 0)
+	{
+		return BeginAppendEscapeChar(str, cur_index, next_index);
+	}
+	else
+	{
+		return ContinueAppendEscapeChar(str, cur_index, next_index);
+	}
+}
+
+bool CharSubString::BeginAppendEscapeChar(const std::string &str, size_t cur_index, size_t &next_index)
+{
+	char ch = str[cur_index];
+	next_index = cur_index + 1;
+
+	if (isdigit(ch))
+	{
+		_value += ch;
+
+		_has_escaped_len++;
+	}
+	else
+	{
+		next_index = cur_index;
+		return false;
+	}
+
+	return true;
+}
+
+bool CharSubString::ContinueAppendEscapeChar(const std::string &str, size_t cur_index, size_t &next_index)
+{
+	char ch = str[cur_index];
+	next_index = cur_index + 1;
+
+	if (isdigit(ch))
+	{
+		_value += ch;
+
+		_has_escaped_len++;
+		if (HasReachMaxEscapeLen())
 		{
-			_is_escape = true;
-			_has_escaped_len = 0;
-		}
-		else if (isalpha(ch))
-		{
-			_value += ch;
-		}
-		else
-		{
-			next_index = cur_index;
-			return  false;
+			EndEscape();
 		}
 	}
 	else
 	{
-		if (isdigit(ch))
-		{
-			_value += ch;
-
-			_has_escaped_len++;
-			if (_has_escaped_len == 3)
-			{
-				_is_escape = false;
-				_has_escaped_len = 0;
-			}
-		}
-		else if (isalpha(ch))
-		{
-			if (_has_escaped_len > 0)
-			{
-				_value += ch;
-
-				_is_escape = false;
-				_has_escaped_len = 0;
-			}
-			else
-			{
-				// 需要回退
-				next_index = cur_index - 1;
-				return false;
-			}
-		}
-		else if (ch == '\\')
-		{
-			if (_has_escaped_len > 0)
-			{
-				
-				_has_escaped_len = 0;
-			}
-			else
-			{
-				// 需要回退
-				next_index = cur_index - 1;
-				return false;
-			}
-		}
-		else
-		{
-			next_index = cur_index;
-			return false;
-		}
+		EndEscape();
+		next_index = cur_index;
 	}
+	
 	return true;
+}
+
+void CharSubString::StartEscape()
+{
+	_is_escape = true;
+	_has_escaped_len = 0;
+}
+
+void CharSubString::EndEscape()
+{
+	_is_escape = false;
+	_has_escaped_len = 0;
+}
+
+bool CharSubString::HasReachMaxEscapeLen() const
+{
+	return _has_escaped_len >= MAX_ESCAPE_LEN;
 }
