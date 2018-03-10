@@ -21,8 +21,23 @@ private:
 
 	void AppendDigitToValue(unsigned int digit);
 
+	int DoCompare(const DigitSubString &digit_sub_str) const;
+	int DoCompareValue(const DigitSubString &digit_sub_str) const;
+	int DoCompareLength(const DigitSubString &digit_sub_str) const;
+
+	int DoCompareValueByValidDigitCount(const DigitSubString &digit_sub_str) const;
+	int DoCompareValueByEachValidDigit(const DigitSubString &digit_sub_str) const;
+
+	int DoCompareValueByValidDigitCount(std::vector<unsigned int> &decimal_digital_list_1,
+										std::vector<unsigned int> &decimal_digital_list_2) const;
+	int DoCompareValueByEachValidDigit(std::vector<unsigned int> &decimal_digital_list_1,
+									   std::vector<unsigned int> &decimal_digital_list_2) const;
+
+	void CalculateDecimalDigitList(std::vector<unsigned int> &decimal_digital_list) const;
+	void AddtoDecimalDigitList(std::vector<unsigned int> &decimal_digital_list, unsigned int digit) const;
+
 	std::vector<unsigned int> _digit_list;
-	int _valid_digit_count;
+	int _prefix_zero_count;
 
 	bool _is_escape;
 };

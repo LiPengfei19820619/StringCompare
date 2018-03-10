@@ -18,6 +18,7 @@ TEST(StringCompare, GIVEN_Two_Strings_With_Only_Digits_WHEN_Compare_THEN_Compare
 	EXPECT_EQ(StringCompare("01234", "12034"), -1);
 	EXPECT_EQ(StringCompare("01234", "12340"), -1);
 	EXPECT_EQ(StringCompare("0001234", "0001234"), 0);
+	EXPECT_EQ(StringCompare("00000", "0000"), 1);
 
 	EXPECT_EQ(StringCompare("000000001234", "00000001234"), 1);
 	EXPECT_EQ(StringCompare("00000001234", "000000001234"), -1);
@@ -94,6 +95,18 @@ TEST(StringCompare, GIVEN_String1_AlphabetEscapeDigit_String2_AlphabetDigit_WHEN
 TEST(StringCompare, GIVEN_String1_AlphabetEscapeAlphabetDigit_String2_AlphabetEscapeAlphabetDigit_WHEN_Compare_THEN_ResultSameWithStrcmp)
 {
 	EXPECT_EQ(StringCompare("123\\a5", "12345"), 1);
+	EXPECT_EQ(StringCompare("97", "\\a"), 1);
+	EXPECT_EQ(StringCompare("65", "\\A"), 1);
+	EXPECT_EQ(StringCompare("97", "0\\a"), 0);
+	EXPECT_EQ(StringCompare("65", "0\\A"), 0);
 
+	EXPECT_EQ(StringCompare("065", "0\\A"), 1);
+}
+
+// 字符串1：包含非法字符，字符串2：包含字母、转义字母、数字，结果：返回-2
+TEST(StringCompare, GIVEN_String1_InvalidChar_String2_AlphabetEscapeAlphabetDigit_WHEN_Compare_THEN_ReturnMinus2)
+{
+	EXPECT_EQ(StringCompare("123.5", "12345"), -2);
+	EXPECT_EQ(StringCompare("12345\\", "12345"), -2);
 }
 
