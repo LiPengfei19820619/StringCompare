@@ -12,6 +12,11 @@ public:
 		               const std::vector<ComparableSubString *> &sub_str_list2);
 
 private:
+	static int CompareAllSubStringInOrder(const std::vector<ComparableSubString *> &sub_str_list1,
+		                                 const std::vector<ComparableSubString *> &sub_str_list2);
+	static int CompareSubStringCount(const std::vector<ComparableSubString *> &sub_str_list1,
+		                             const std::vector<ComparableSubString *> &sub_str_list2);
+
 	static int CompareTwoSubString(const ComparableSubString &substr1,
 		                           const ComparableSubString &substr2);
 
