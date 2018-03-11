@@ -3,6 +3,7 @@
 #include "substring/ComparableSubString.h"
 #include "splitter/StringSplitter.h"
 #include "comparer/StringComparer.h"
+#include "Comparer/CompareRule.h"
 
 using namespace std;
 
@@ -21,5 +22,5 @@ int StringCompare(const string &str1, const string &str2)
 		return STRING_COMPARE_RESULT_INVALID_STRING;
 	}
 
-	return StringComparer::Compare(sub_str_list1, sub_str_list2);
+	return CompareRule::Compare(sub_str_list1, sub_str_list2);
 }
