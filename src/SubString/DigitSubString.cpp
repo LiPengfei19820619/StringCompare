@@ -1,8 +1,18 @@
 #include "DigitSubString.h"
 
-DigitSubString::DigitSubString(std::string str)
+using namespace std;
+
+
+DigitSubString::DigitSubString(string str)
 {
+	// 将数字串中的每个数字和字符，转成对应的数值的列表，并将前面的无效0过滤掉
+	// 如数字串"001\A\A"，转成的列表为[1,65,65]
 	ParseStringToNumberList(str);
+}
+
+DigitSubString::~DigitSubString()
+{
+
 }
 
 ComparableSubString::SUBSTRING_TYPE DigitSubString::GetType() const
@@ -10,13 +20,20 @@ ComparableSubString::SUBSTRING_TYPE DigitSubString::GetType() const
 	return ComparableSubString::SUBSTRING_TYPE_NUMBER;
 }
 
-void DigitSubString::GetValue(std::string &value) const
+// 获取字符串形式的子串的值，以进行比较
+// 对于纯数字的串，是数字的十进制形式的每一位数字组成的字符串，
+// 比如数字串"001\A\A"，其数字值为 1*100+65*10+65=815，则此接口返回的字符串为"815",不含前面的无效0的个数
+void DigitSubString::GetValue(string &value) const
 {
-	std::vector<unsigned int> decimal_digital_list;
+	vector<unsigned int> decimal_digital_list;
 
+	// 根据数值列表中的每一个数值，计算出实际的十进制值，并将十进制数的每一位数字存放到decimal_digital_list中
+	// 如数值列表为[1,65,65]，则计算的十进制数值为1*100+65*10+65=815，那么decimal_digital_list内容为[8,1,5]
 	CalculateDecimalDigitList(decimal_digital_list);
 
-	for (std::vector<unsigned int>::const_iterator it = decimal_digital_list.begin();
+	// 将十进制的每位数字组成的列表，转成一个字符串以返回
+	// 如十进制数字列表内容[8,1,5]转成的字符串为"815"
+	for (vector<unsigned int>::const_iterator it = decimal_digital_list.begin();
 		 it != decimal_digital_list.end();
 		 it++)
 	{
@@ -26,35 +43,37 @@ void DigitSubString::GetValue(std::string &value) const
 
 size_t DigitSubString::GetLength() const
 {
-	return _digit_list.size() + _prefix_zero_count;
+	return _valid_number_list.size() + _prefix_zero_count;
 }
 
-void DigitSubString::ParseStringToNumberList(const std::string str)
+// 将数字串中的每个数字和字符，转成对应的数值的列表，并将前面的无效0过滤掉
+// 如数字串"001\A\A"，转成的列表为[1,65,65]
+void DigitSubString::ParseStringToNumberList(const string str)
 {
 	for (size_t i = 0; i < str.length(); i++)
 	{
 		if (isdigit(str[i]))
 		{
-			AppendDigitToValue(str[i] - '0');
+			AppendNumberToList(str[i] - '0');
 		}
 		else
 		{
-			AppendDigitToValue(str[i]);
+			AppendNumberToList(str[i]);
 		}
 	}
 }
 
-void DigitSubString::AppendDigitToValue(unsigned int digit)
+void DigitSubString::AppendNumberToList(unsigned int digit)
 {
-	if (_digit_list.size() > 0)
+	if (_valid_number_list.size() > 0)
 	{
-		_digit_list.push_back(digit);
+		_valid_number_list.push_back(digit);
 		return;
 	}
 
 	if (digit > 0)
 	{
-		_digit_list.push_back(digit);
+		_valid_number_list.push_back(digit);
 	}
 	else
 	{
@@ -63,17 +82,17 @@ void DigitSubString::AppendDigitToValue(unsigned int digit)
 	
 }
 
-void DigitSubString::CalculateDecimalDigitList(std::vector<unsigned int> &decimal_digital_list) const
+void DigitSubString::CalculateDecimalDigitList(vector<unsigned int> &decimal_digital_list) const
 {
-	std::vector<unsigned int>::const_iterator it;
+	vector<unsigned int>::const_iterator it;
 
-	for (it = _digit_list.begin(); it != _digit_list.end(); it++)
+	for (it = _valid_number_list.begin(); it != _valid_number_list.end(); it++)
 	{
-		AddtoDecimalDigitList(decimal_digital_list, *it);
+		AddNumberToDecimalDigitList(decimal_digital_list, *it);
 	}
 }
 
-void DigitSubString::AddtoDecimalDigitList(std::vector<unsigned int> &decimal_digital_list, unsigned int digit) const
+void DigitSubString::AddNumberToDecimalDigitList(vector<unsigned int> &decimal_digital_list, unsigned int digit) const
 {
 	unsigned int carry_bit = 0;
 	unsigned int quotient = digit;
@@ -81,7 +100,7 @@ void DigitSubString::AddtoDecimalDigitList(std::vector<unsigned int> &decimal_di
 
 	decimal_digital_list.push_back(0);
 
-	std::vector<unsigned int>::reverse_iterator it_adder = decimal_digital_list.rbegin();
+	vector<unsigned int>::reverse_iterator it_adder = decimal_digital_list.rbegin();
 
 	do
 	{

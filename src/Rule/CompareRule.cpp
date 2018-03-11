@@ -139,6 +139,7 @@ int CompareRule::CompareNumericValueByDigitCount(const std::string &str1, const 
 	return CompareTwoValues<size_t>(str1.length(), str2.length());
 }
 
+// 从高位到地位依次比较每一位十进制数字的大小
 int CompareRule::CompareNumericValueByEachDigit(const std::string &str1, const std::string &str2)
 {
 	for (size_t i = 0; i < str1.length(); i++)

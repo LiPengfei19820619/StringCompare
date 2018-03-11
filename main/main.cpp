@@ -15,6 +15,5 @@ int main(int argc, char *argv[])
 
 	int result = StringCompare(str1, str2);
 
-	printf("result is:%d\n", result);
 	return result;
 }

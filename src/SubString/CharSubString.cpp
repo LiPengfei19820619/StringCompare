@@ -7,6 +7,11 @@ CharSubString::CharSubString(std::string str)
 
 }
 
+CharSubString::~CharSubString()
+{
+
+}
+
 ComparableSubString::SUBSTRING_TYPE CharSubString::GetType() const
 {
 	return ComparableSubString::SUBSTRING_TYPE_CHAR;

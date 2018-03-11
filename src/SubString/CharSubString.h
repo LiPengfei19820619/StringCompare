@@ -7,6 +7,7 @@ class CharSubString : public ComparableSubString
 {
 public:
 	CharSubString(std::string str);
+	~CharSubString();
 
 	SUBSTRING_TYPE GetType() const;
 
