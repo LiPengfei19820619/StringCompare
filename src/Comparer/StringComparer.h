@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ComparableSubString.h"
+#include "substring/ComparableSubString.h"
 #include <vector>
 
 class StringComparer

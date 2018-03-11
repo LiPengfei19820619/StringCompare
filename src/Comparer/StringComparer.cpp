@@ -1,4 +1,5 @@
 #include "StringComparer.h"
+#include "CompareRule.h"
 
 using namespace std;
 
@@ -12,7 +13,7 @@ int StringComparer::Compare(const vector<ComparableSubString *> &sub_str_list1,
 		 it1 != sub_str_list1.end() && it2 != sub_str_list2.end();
 		 it1++, it2++)
 	{
-		int result = (*it1)->Compare(*(*it2));
+		int result = CompareRule::Compare(*(*it1), *(*it2)); //(*it1)->Compare(*(*it2));
 		if (result != 0)
 		{
 			return result;

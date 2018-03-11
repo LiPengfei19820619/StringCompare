@@ -1,8 +1,8 @@
 #include "StringCompare.h"
 
-#include "ComparableSubString.h"
-#include "StringSplitter.h"
-#include "StringComparer.h"
+#include "substring/ComparableSubString.h"
+#include "splitter/StringSplitter.h"
+#include "comparer/StringComparer.h"
 
 using namespace std;
 
@@ -16,7 +16,10 @@ int StringCompare(const string &str1, const string &str2)
 		return -2;
 	}
 
-	StringSplitter::Split(str2, sub_str_list2);
+	if (!StringSplitter::Split(str2, sub_str_list2))
+	{
+		return -2;
+	}
 
 	return StringComparer::Compare(sub_str_list1, sub_str_list2);
 }

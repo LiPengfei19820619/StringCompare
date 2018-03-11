@@ -108,5 +108,18 @@ TEST(StringCompare, GIVEN_String1_InvalidChar_String2_AlphabetEscapeAlphabetDigi
 {
 	EXPECT_EQ(StringCompare("123.5", "12345"), -2);
 	EXPECT_EQ(StringCompare("12345\\", "12345"), -2);
+	EXPECT_EQ(StringCompare("12345\\.", "12345"), -2);
+
+	EXPECT_EQ(StringCompare("abcd\\", "abcd"), -2);
+	EXPECT_EQ(StringCompare("abcd\\.", "abcd"), -2);
+	EXPECT_EQ(StringCompare("ab.cd\\.", "abcd"), -2);
+}
+
+// ¿Õ´®
+TEST(StringCompare, GIVEN_String1_Empty_String2_AlphabetEscapeAlphabetDigit_WHEN_Compare_THEN_ReturnMinus2)
+{
+	EXPECT_EQ(StringCompare("", "12345"), -1);
+	EXPECT_EQ(StringCompare("abc123", ""), 1);
+	EXPECT_EQ(StringCompare("", ""), 0);
 }
 

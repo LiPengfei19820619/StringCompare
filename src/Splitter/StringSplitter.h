@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ComparableSubString.h"
+#include "substring/ComparableSubString.h"
 
 #include <string>
 #include <vector>
@@ -11,8 +11,12 @@ public:
 	static bool Split(const std::string &str, std::vector<ComparableSubString *> &substrs);
 
 private:
-	static ComparableSubString *SplitASubString(const std::string &str, size_t begin_pos, size_t &end_pos);
+	static ComparableSubString *SplitASubString(const std::string &str, size_t &cur_pos);
+
 	static bool CurrentPosIsChar(const std::string &str, size_t begin_pos);
 	static bool CurrentPosIsDigit(const std::string &str, size_t begin_pos);
 	static bool IsEscapeChar(char ch);
+
+	static std::string SplitACharSubString(const std::string &str, size_t &cur_pos);
+	static std::string SplitADigitSubString(const std::string &str, size_t &cur_pos);
 };
