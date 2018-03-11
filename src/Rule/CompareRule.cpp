@@ -1,4 +1,4 @@
-#include "Comparer/CompareRule.h"
+#include "Rule/CompareRule.h"
 
 #include "SubString/ComparableSubString.h"
 

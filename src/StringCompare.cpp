@@ -2,8 +2,7 @@
 
 #include "substring/ComparableSubString.h"
 #include "splitter/StringSplitter.h"
-#include "comparer/StringComparer.h"
-#include "Comparer/CompareRule.h"
+#include "rule/CompareRule.h"
 
 using namespace std;
 
