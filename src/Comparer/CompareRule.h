@@ -23,4 +23,7 @@ private:
 
 	static int CompareNumericValueByDigitCount(const std::string &str1, const std::string &str2);
 	static int CompareNumericValueByEachDigit(const std::string &str1, const std::string &str2);
+
+	template<typename T>
+	static int CompareTwoValues(T value1, T value2);
 };

@@ -1,5 +1,7 @@
 #include "StringComparer.h"
+
 #include "CompareRule.h"
+#include "StringCompare.h"
 
 using namespace std;
 
@@ -14,7 +16,7 @@ int StringComparer::Compare(const vector<ComparableSubString *> &sub_str_list1,
 		 it1++, it2++)
 	{
 		int result = CompareRule::Compare(*(*it1), *(*it2)); //(*it1)->Compare(*(*it2));
-		if (result != 0)
+		if (result != STRING_COMPARE_RESULT_EQUAL)
 		{
 			return result;
 		}
@@ -22,12 +24,12 @@ int StringComparer::Compare(const vector<ComparableSubString *> &sub_str_list1,
 
 	if (it1 == sub_str_list1.end() && it2 == sub_str_list2.end())
 	{
-		return 0;
+		return STRING_COMPARE_RESULT_EQUAL;
 	}
 	if (it1 == sub_str_list1.end())
 	{
-		return -1;
+		return STRING_COMPARE_RESULT_LITTLE;
 	}
 
-	return 1;
+	return STRING_COMPARE_RESULT_GREATER;
 }

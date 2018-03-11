@@ -2,6 +2,8 @@
 
 #include "SubString/ComparableSubString.h"
 
+#include "StringCompare.h"
+
 #include <string>
 
 using namespace std;
@@ -28,10 +30,10 @@ int CompareRule::CompareDifferentTypeSubString(const ComparableSubString &substr
 {
 	if (substr1.GetType() == ComparableSubString::SUBSTRING_TYPE_NUMBER)
 	{
-		return -1;
+		return STRING_COMPARE_RESULT_LITTLE;
 	}
 
-	return 1;
+	return STRING_COMPARE_RESULT_GREATER;
 }
 
 int CompareRule::CompareTwoCharSubString(const ComparableSubString &substr1,
@@ -56,23 +58,12 @@ int CompareRule::CompareTwoDigitSubString(const ComparableSubString &substr1,
 	substr2.GetValue(value2);
 
 	int result = CompareByNumericValue(value1, value2);
-	if (result != 0)
+	if (result != STRING_COMPARE_RESULT_EQUAL)
 	{
 		return result;
 	}
 
-	if (substr1.GetLength() > substr2.GetLength())
-	{
-		return 1;
-	}
-	else if (substr1.GetLength() < substr2.GetLength())
-	{
-		return -1;
-	}
-	else
-	{
-		return 0;
-	}
+	return CompareTwoValues<size_t>(substr1.GetLength(), substr2.GetLength());
 }
 
 int CompareRule::CompareByStringCompare(const std::string &str1, const std::string &str2)
@@ -83,7 +74,7 @@ int CompareRule::CompareByStringCompare(const std::string &str1, const std::stri
 int CompareRule::CompareByNumericValue(const std::string &str1, const std::string &str2)
 {
 	int result = CompareNumericValueByDigitCount(str1, str2);
-	if (result != 0)
+	if (result != STRING_COMPARE_RESULT_EQUAL)
 	{
 		return result;
 	}
@@ -93,37 +84,36 @@ int CompareRule::CompareByNumericValue(const std::string &str1, const std::strin
 
 int CompareRule::CompareNumericValueByDigitCount(const std::string &str1, const std::string &str2)
 {
-	if (str1.length() > str2.length())
-	{
-		return 1;
-	}
-	else if (str1.length() < str2.length())
-	{
-		return -1;
-	}
-	else
-	{
-		return 0;
-	}
+	return CompareTwoValues<size_t>(str1.length(), str2.length());
 }
 
 int CompareRule::CompareNumericValueByEachDigit(const std::string &str1, const std::string &str2)
 {
 	for (size_t i = 0; i < str1.length(); i++)
 	{
-		if (str1[i] > str2[i])
+		int result = CompareTwoValues<char>(str1[i], str2[i]);
+		if (result != STRING_COMPARE_RESULT_EQUAL)
 		{
-			return 1;
-		}
-		else if (str1[i] < str2[i])
-		{
-			return -1;
-		}
-		else
-		{
-
+			return result;
 		}
 	}
 
-	return 0;
+	return STRING_COMPARE_RESULT_EQUAL;
+}
+
+template<typename T>
+static int CompareRule::CompareTwoValues(T value1, T value2)
+{
+	if (value1 > value2)
+	{
+		return STRING_COMPARE_RESULT_GREATER;
+	}
+	else if (value1 < value2)
+	{
+		return STRING_COMPARE_RESULT_LITTLE;
+	}
+	else
+	{
+		return STRING_COMPARE_RESULT_EQUAL;
+	}
 }
